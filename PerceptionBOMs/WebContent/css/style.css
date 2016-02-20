@@ -1,0 +1,6 @@
+body { padding-top:50px; }
+
+table.scroll{
+	height: 100px;
+	overflow-y: scroll;
+}
