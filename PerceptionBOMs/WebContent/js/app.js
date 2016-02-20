@@ -7,10 +7,10 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
   
     // create the list of sushi rolls 
     $scope.sushi = [
-        { name: 'Cali Roll', fish: 'Crab', tastiness: 2 },
-        { name: 'Philly', fish: 'Tuna', tastiness: 4 },
-        { name: 'Tiger', fish: 'Eel', tastiness: 7 },
-        { name: 'Rainbow', fish: 'Variety', tastiness: 6 }
+        { name: 'Cali Roll - 1', fish: 'Crab', tastiness: 2 },
+        { name: 'Philly - 1', fish: 'Tuna', tastiness: 4 },
+        { name: 'Tiger - 1', fish: 'Eel', tastiness: 7 },
+        { name: 'Rainbow - 1', fish: 'Variety', tastiness: 6 }
     ];
     
     $scope.newData = function(){
