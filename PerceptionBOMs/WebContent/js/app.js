@@ -1,9 +1,14 @@
 angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
 
-.controller('mainController', function($scope) {
+.controller('mainController', function($scope, $http) {
     $scope.sortType     = 'name'; // set the default sort type
     $scope.sortReverse  = false;  // set the default sort order
     $scope.searchFish   = '';     // set the default search/filter term
+    
+    $http.get("rest/bomService").success( function(response) {
+        console.log('ajax result: ');
+        console.log(response);
+     });
   
     // create the list of sushi rolls 
     $scope.sushi = [
