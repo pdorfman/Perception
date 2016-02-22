@@ -1,6 +1,67 @@
 body { padding-top:50px; }
 
+select, input {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+select {
+	font-size: 2em;
+}
+
+.container {
+	width: 70%;
+}
+
 table.scroll{
 	height: 100px;
 	overflow-y: scroll;
 }
+
+ table {
+	color: black;
+	background-color: white;
+}
+
+.sortLink {
+    cursor: pointer;
+}
+
+.sortLink:hover {
+    text-decoration: underline;
+}
+
+#createButton {
+	float: right;
+/* 	margin-top: 20px; */
+}
+
+#bomTitle {
+	font-size: 2em;
+}
+
+#bomDescriptionInput{
+	width: 60%;
+}
+
+#quantityInput {
+	width: 40px;
+}
+
+#partTypeSelect {
+	max-width: 120px;
+}
+#partSelect {
+	width: 240px;
+}
+
+/* bootswatch overrides */
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #fcf8e3;
+ }
+.table-striped>tbody>tr:nth-child(odd):hover>td, 
+.table-striped>tbody>tr:nth-child(odd):hover>th {
+   background-color: #faf2cc;
+ }
+ 
