@@ -25,35 +25,42 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     $scope.createBOM = function(){
     	var isCreate = true;
     	if($scope.selectedBOM.number != null){
-    		isCreate = confirm("If you continue, you will lose your entered changes. Would you like to continue?");
+    		isCreate = confirm("To create a new BOM, you will lose any changes to the currently selected BOM.\nWould you like to continue?");
     	}
 
     	if(isCreate){
-    		getBOMs();
         	resetPartSelection();
         	resetSelectedBOM();
-        	$scope.showBomDetail = true;
+        	openBOMDetail();
     	}
     };
     
     $scope.editBOM = function(bom){
-    	console.log(bom);
     	resetPartSelection();
     	$scope.selectedBOM = bom;
-    	$scope.showBomDetail = true;
+    	openBOMDetail();
     };
     
     $scope.saveBOM = function(){
+    	console.log("Save BOM");
+    	console.log($scope.selectedBOM);
+    	$http.post("rest/bomService/boms", $scope.selectedBOM).success( function(response){
+    		console.log("POST RESPONSE");
+    		console.log(response);
+        	closeBOMDetail();
+        	getBOMs();
+    	});
     };
     
     $scope.cancelBOM = function(){
-    	$scope.showBomDetail = false;
+    	closeBOMDetail();
     	getBOMs();
     };
     
     $scope.addPart = function(){
     	console.log($scope.part);
     	
+    	// Check if part already in this BOM
     	var partInBOM = false;
     	var bomPart = null;
         angular.forEach($scope.selectedBOM.parts, function(value, key) {
@@ -62,17 +69,21 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
         		bomPart = value;
         	}
     	});
-        
     	
         if(!partInBOM){
+        	// add part
         	$scope.part.quantity = $scope.quantity;
         	$scope.selectedBOM.parts.push($scope.part);
         }else{
+        	// confirm update quantity
             if(confirm('The BOM already contains this part. Would you like to update the quantity?')){
             	bomPart.quantity = $scope.quantity;
             }
         }
-    	
+    };
+    
+    $scope.removePart = function(number){
+    	console.log(number);
     };
     
     
@@ -115,6 +126,17 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
         });
     };
     
+    function closeBOMDetail(){
+    	enableButtons();
+    	resetSelectedBOM();
+    	$scope.showBomDetail = false;
+    }
+    
+    function openBOMDetail(){
+    	$scope.showBomDetail = true;
+    	disableButtons();
+    }
+    
     function resetPartSelection(){
     	console.log('reset Parts');
     	$scope.partType = "";
@@ -131,5 +153,15 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     			parts : []
     	};
     };
+    
+    function disableButtons(){
+    	angular.element(document.querySelector('#createButton')).addClass('disabled');
+    	angular.element(document.querySelectorAll('#bomsList .btn')).addClass('disabled');
+    }
+    
+    function enableButtons(){
+    	angular.element(document.querySelector('#createButton')).removeClass('disabled');
+    	angular.element(document.querySelectorAll('#bomsList .btn')).removeClass('disabled');
+    }
   
 });

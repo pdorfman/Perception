@@ -29,7 +29,7 @@
             </div>
             
             
-	        <table class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
+	        <table id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
 	
 	            <thead>
 	                <tr>
@@ -104,8 +104,7 @@
                             <td>{{ thisPart.description }}</td>
                             <td>{{ thisPart.quantity }}</td>
 	                        <td>
-	                            <div class="btn btn-info btn-xs" ng-click="editBOM(bom)">edit</div>
-	                            <div class="btn btn-danger btn-xs">delete</div>
+	                            <div class="btn btn-danger btn-xs" ng-click="removePart(thisPart.partNumber)">delete</div>
 	                        </td>
 	                    </tr>
 	                </tbody>
