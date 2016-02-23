@@ -14,7 +14,7 @@ select {
 }
 
 table.scroll{
-	height: 100px;
+	height: 150px;
 	overflow-y: scroll;
 }
 
@@ -44,7 +44,7 @@ table.scroll{
 	width: 60%;
 }
 
-#quantityInput {
+.quantityInput {
 	width: 40px;
 }
 

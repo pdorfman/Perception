@@ -91,6 +91,14 @@ public class bomService {
 		if(bom.getParts() == null || bom.getParts().size() == 0){
 			errors.add("BOM must have one or more parts.");
 		}
+		if(bom.getParts() != null){
+			for(Part pt : bom.getParts()){
+				if(pt.getQuantity() <= 0){
+					errors.add("Parts cannot have a quantity of 0.");
+					break;
+				}
+			}
+		}
 		return errors;
 	}
 

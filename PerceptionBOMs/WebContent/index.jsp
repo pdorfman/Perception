@@ -60,9 +60,9 @@
 	        <div ng-show="!boms.length" class="alert alert-warning">You currently have no saved BOMS. Please click the link above to get started!</div>
 	        
 	        
-	        <div ng-show="showBomDetail">
+	        <div ng-show="showBOMDetail">
 	            <div id="bomTitle">
-	                <span ng-show="selectedBOM.number">BOM Detail (&num;{{selectedBOM.number}})</span>
+	                <span ng-show="selectedBOM.number">BOM Detail ({{selectedBOM.number}})</span>
 	                <span ng-show="!selectedBOM.number">New BOM Detail</span>
 	            </div>
                 <input id="bomDescriptionInput" ng-model="selectedBOM.description" type="text" placeholder="Description"/>
@@ -78,7 +78,7 @@
                 <select id="partSelect" ng-model="part" ng-show="partType" ng-options="part as part.description for part in parts[partType] | filter:{description : partsFilter}">
                 </select>
 
-                <input id="quantityInput" ng-model="quantity" type="number" id="quantityInput" ng-show="part" placeholder="Qty"/>
+                <input class="quantityInput" ng-model="quantity" type="number" id="quantityInput" ng-show="part" placeholder="Qty"/>
                 <div class="btn btn-success btn-xs" ng-show="quantity > 0 && part" ng-click="addPart()">Add Part(s)</div>
                 
                 <br/>
@@ -102,9 +102,9 @@
 	                    <tr ng-repeat="thisPart in selectedBOM.parts">
 	                        <td>{{ thisPart.partNumber }}</td>
                             <td>{{ thisPart.description }}</td>
-                            <td>{{ thisPart.quantity }}</td>
+                            <td><input class="quantityInput" type="number" ng-model="thisPart.quantity"/></td>
 	                        <td>
-	                            <div class="btn btn-danger btn-xs" ng-click="removePart(thisPart.partNumber)">delete</div>
+	                            <div class="btn btn-danger btn-xs" ng-click="removePart(thisPart.partNumber)">remove</div>
 	                        </td>
 	                    </tr>
 	                </tbody>
