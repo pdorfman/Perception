@@ -21,7 +21,7 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     getBOMs();
 
 
-    // BOM manipulation
+    // BOM UI manipulation
     $scope.createBOM = function(){
     	var isCreate = true;
     	if($scope.selectedBOM.number != null){
@@ -39,17 +39,6 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     	resetPartSelection();
     	$scope.selectedBOM = bom;
     	openBOMDetail();
-    };
-    
-    $scope.saveBOM = function(){
-    	console.log("Save BOM");
-    	console.log($scope.selectedBOM);
-    	$http.post("rest/bomService/boms", $scope.selectedBOM).success( function(response){
-    		console.log("POST RESPONSE");
-    		console.log(response);
-        	closeBOMDetail();
-        	getBOMs();
-    	});
     };
     
     $scope.cancelBOM = function(){
@@ -84,6 +73,38 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     
     $scope.removePart = function(number){
     	console.log(number);
+    };
+    
+
+    $scope.saveBOM = function(){
+    	console.log("Save BOM...");
+    	console.log($scope.selectedBOM);
+    	
+    	if($scope.selectedBOM.number == null){
+    		console.log("rest/bomService/boms");
+	    	$http.post("rest/bomService/boms", $scope.selectedBOM).success( function(response){
+	    		console.log("POST RESPONSE");
+	    		console.log(response);
+	    		
+	    		if(response.status == 'success'){
+		        	closeBOMDetail();
+		        	getBOMs();
+	    		}
+	        	resultMessage(response);
+	    	});
+    	}else{
+    		console.log("rest/bomService/boms/" + $scope.selectedBOM.number);
+	    	$http.put("rest/bomService/boms/" + $scope.selectedBOM.number, $scope.selectedBOM).success( function(response){
+	    		console.log("POST RESPONSE");
+	    		console.log(response);
+
+	    		if(response.status == 'success'){
+		        	closeBOMDetail();
+		        	getBOMs();
+	    		}
+	        	resultMessage(response);
+	    	});
+    	}
     };
     
     
@@ -124,7 +145,7 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
             console.log(response);
         	$scope.boms = response;
         });
-    };
+    }
     
     function closeBOMDetail(){
     	enableButtons();
@@ -143,7 +164,7 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     	$scope.partsFilter = "";
     	$scope.part = "";
     	$scope.quantity = "";
-    };
+    }
     
     function resetSelectedBOM(){
     	console.log('reset BOM');
@@ -152,7 +173,20 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     			description : null,
     			parts : []
     	};
-    };
+    }
+    
+    function resultMessage(response){
+    	var msg;
+    	if(response.status == "success"){
+    		msg = 'Success!\n\n';
+    	}else{
+    		msg = 'We encountered a problem:\n\n';
+    	}
+        angular.forEach(response.messages, function(value) {
+			msg += '- ' + value + '\n';
+    	});
+    	alert(msg);
+    }
     
     function disableButtons(){
     	angular.element(document.querySelector('#createButton')).addClass('disabled');
