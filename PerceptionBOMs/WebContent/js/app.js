@@ -85,11 +85,28 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     	}
     };
     
+    $scope.deleteBOM = function(bom){
+    	if(confirm('Are you sure you want to delete this BOM?\nThis cannot be undone.')){
+    		// delete existing BOM
+    		var url = SERVICE_BASE_PATH + "/boms/" + bom.number;
+    		console.log("DELETE " + url);
+	    	$http.delete(url).success( function(response){
+	    		console.log("DELETE RESPONSE");
+	    		console.log(response);
+
+	    		if(response.status == 'success'){
+		        	hideBOMDetail();
+		        	loadBOMs();
+	    		}
+	        	displayResponseMessage(response);
+	    	});
+    	}
+    }
+    
 
     /*---- Parts Manipulation -----*/
     
     $scope.addPart = function(){
-    	console.log($scope.part);
     	
     	// Check if part already in this BOM
     	var partInBOM = false;
@@ -100,7 +117,7 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
         		bomPart = value;
         	}
     	});
-    	
+
         if(!partInBOM){
         	// add part
         	$scope.part.quantity = $scope.quantity;
@@ -113,8 +130,11 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
         }
     };
     
-    $scope.removePart = function(number){
-    	console.log(number);
+    $scope.removePart = function(part){
+    	console.log("delete part: " + $scope.selectedBOM.parts.indexOf(part));
+    	console.log(part);
+    	var index = $scope.selectedBOM.parts.indexOf(part);
+    	$scope.selectedBOM.parts.splice(index, 1);     
     };
     
     $scope.sumParts = function (items, prop) {

@@ -29,7 +29,7 @@
             </div>
             
             
-	        <table id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
+	        <table ng-show="boms.length"  id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
 	
 	            <thead>
 	                <tr>
@@ -51,7 +51,7 @@
                         <td>{{ bom.description }} with {{bom.parts.length}} component parts and {{sumParts(bom.parts, "quantity")}} total pieces</td>
                         <td>
                             <div class="btn btn-info btn-xs" ng-click="editBOM(bom)">edit</div>
-                            <div class="btn btn-danger btn-xs">delete</div>
+                            <div class="btn btn-danger btn-xs" ng-click="deleteBOM(bom)">delete</div>
                         </td>
 	                </tr>
 	            </tbody>
@@ -65,7 +65,7 @@
 	                <span ng-show="selectedBOM.number">BOM Detail ({{selectedBOM.number}})</span>
 	                <span ng-show="!selectedBOM.number">New BOM Detail</span>
 	            </div>
-                <input id="bomDescriptionInput" ng-model="selectedBOM.description" type="text" placeholder="Description"/>
+                <input id="bomDescriptionInput" ng-model="selectedBOM.description" type="text" placeholder="Description" required/>
                 <br>
                 
                 Add a part: 
@@ -78,7 +78,7 @@
                 <select id="partSelect" ng-model="part" ng-show="partType" ng-options="part as part.description for part in parts[partType] | filter:{description : partsFilter}">
                 </select>
 
-                <input class="quantityInput" ng-model="quantity" type="number" id="quantityInput" ng-show="part" placeholder="Qty"/>
+                <input class="quantityInput" ng-model="quantity" type="number" id="quantityInput" ng-show="part" placeholder="Qty" min="1" integer />
                 <div class="btn btn-success btn-xs" ng-show="quantity > 0 && part" ng-click="addPart()">Add Part(s)</div>
                 
                 <br/>
@@ -102,9 +102,9 @@
 	                    <tr ng-repeat="thisPart in selectedBOM.parts">
 	                        <td>{{ thisPart.partNumber }}</td>
                             <td>{{ thisPart.description }}</td>
-                            <td><input class="quantityInput" type="number" ng-model="thisPart.quantity"/></td>
+                            <td><input class="quantityInput" type="number" ng-model="thisPart.quantity" min="1" integer /></td>
 	                        <td>
-	                            <div class="btn btn-danger btn-xs" ng-click="removePart(thisPart.partNumber)">remove</div>
+	                            <div class="btn btn-danger btn-xs" ng-click="removePart(thisPart)">remove</div>
 	                        </td>
 	                    </tr>
 	                </tbody>
