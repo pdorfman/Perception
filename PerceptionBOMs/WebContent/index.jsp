@@ -9,24 +9,110 @@
     <!-- CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/animate.min.css">
     <link rel="stylesheet" href="css/style.css">
 
 	<!--  JS -->
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
 	<script src="js/libraries/angular/angu-fixed-header-table.js"></script>
 	<script src="js/app.js"></script>
 	
 </head>
 
 <body>
+    <img id="logo" src="https://www.perceptionsoftware.com/wp-content/themes/perception/images/logo.png">
+    
     <div class="container" ng-app="perceptionBOMs" ng-controller="mainController">
+  
+        <div class="well" ng-show="showBOMDetail">
+        
+            <div id="bomTitle">
+                <span ng-show="selectedBOM.number">BOM Detail ({{selectedBOM.number}})</span>
+                <span ng-show="!selectedBOM.number">New BOM Detail</span>
+            </div>
+            
+            <input id="bomDescriptionInput" ng-model="selectedBOM.description" type="text" placeholder="Description" required/>
+            <br>
+            
+            Add a part: 
+            <select id="partTypeSelect" ng-model="partType">
+                <option ng-repeat="part in partTypes" value="{{part.value}}">{{part.label}}</option>
+            </select>
+            
+            <input type="text" ng-model="partsFilter" ng-show="partType" placeholder="Filter Parts (optional)">
+            
+            <select id="partSelect" ng-model="part" ng-show="partType" ng-options="part as part.description for part in parts[partType] | filter:{description : partsFilter}">
+            </select>
 
+            <input class="quantityInput" ng-model="quantity" type="number" id="quantityInput" ng-show="part" placeholder="Qty" min="1" integer />
+            <div class="btn btn-success btn-xs" ng-show="quantity > 0 && part" ng-click="addPart()">Add Part(s)</div>
+            
+            <br/>
+            
+            <table id="partsList" ng-show="selectedBOM.parts.length"  class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
+   
+                <thead>
+                    <tr>
+                        <th width="200">
+                            <span class="sortLink" ng-click="sort.parts.type = 'number'; sort.parts.reverse = !sort.parts.reverse">
+                                Corporate Part Number
+                                <span ng-show="sort.parts.type == 'number' && !sort.parts.reverse" class="fa fa-caret-down"></span>
+                                <span ng-show="sort.parts.type == 'number' && sort.parts.reverse" class="fa fa-caret-up"></span>
+                            </span>
+                        </th>
+                        <th>
+                            <div class="sortLink" ng-click="sort.parts.type = 'type'; sort.parts.reverse = !sort.parts.reverse">
+                                Type
+                                <span ng-show="sort.parts.type == 'type' && !sort.parts.reverse" class="fa fa-caret-down"></span>
+                                <span ng-show="sort.parts.type == 'type' && sort.parts.reverse" class="fa fa-caret-up"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="sortLink" ng-click="sort.parts.type = 'description'; sort.parts.reverse = !sort.parts.reverse">
+                                Description
+                                <span ng-show="sort.parts.type == 'description' && !sort.parts.reverse" class="fa fa-caret-down"></span>
+                                <span ng-show="sort.parts.type == 'description' && sort.parts.reverse" class="fa fa-caret-up"></span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="sortLink" ng-click="sort.parts.type = 'quantity'; sort.parts.reverse = !sort.parts.reverse">
+                                Qty
+                                <span ng-show="sort.parts.type == 'quantity' && !sort.parts.reverse" class="fa fa-caret-down"></span>
+                                <span ng-show="sort.parts.type == 'quantity' && sort.parts.reverse" class="fa fa-caret-up"></span>
+                            </div>
+                        </th>
+                        <th width="150">Actions</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr ng-repeat="thisPart in selectedBOM.parts | orderBy:sort.parts.type:sort.parts.reverse">
+                        <td>{{ thisPart.number }}</td>
+                        <td>{{ thisPart.type }}</td>
+                        <td>{{ thisPart.description }}</td>
+                        <td>
+                            <input class="quantityInput" type="number" ng-model="thisPart.quantity" min="1" integer />
+                        </td>
+                        <td>
+                            <div class="btn btn-danger btn-xs" ng-click="removePart(thisPart)">remove</div>
+                        </td>
+                    </tr>
+                </tbody>
+    
+            </table>
+            <div ng-show="!selectedBOM.parts.length" class="alert alert-warning">This BOM currently has no parts. Please add a part above!</div>
+               
+            <div class="btn btn-success btn-sm" ng-click="saveBOM()">Save</div>
+            <div class="btn btn-danger btn-sm" ng-click="cancelBOM()">Cancel</div>
+        </div>
+        
         <div class="well">
+        
             <div id="bomTitle">
                 <span>Bills of Materials</span>
                 <div id="createButton" class="btn btn-success btn-sm" ng-click="createBOM()">Create New BOM</div>
             </div>
-            
             
 	        <table ng-show="boms.length" id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
 	
@@ -34,7 +120,7 @@
 	                <tr>
 	                    <th width="200">
                             <span class="sortLink" ng-click="sort.boms.type = 'number'; sort.boms.reverse = !sort.boms.reverse">
-		                        Number
+		                        BOM Number
 						        <span ng-show="sort.boms.type == 'number' && !sort.boms.reverse" class="fa fa-caret-down"></span>
 						        <span ng-show="sort.boms.type == 'number' && sort.boms.reverse" class="fa fa-caret-up"></span>
                             </span>
@@ -64,78 +150,8 @@
 	        </table>
 	        <div ng-show="!boms.length" class="alert alert-warning">You currently have no saved BOMS. Please click the link above to get started!</div>
 	        
-	        
-	        <div ng-show="showBOMDetail">
-	            <div id="bomTitle">
-	                <span ng-show="selectedBOM.number">BOM Detail ({{selectedBOM.number}})</span>
-	                <span ng-show="!selectedBOM.number">New BOM Detail</span>
-	            </div>
-                <input id="bomDescriptionInput" ng-model="selectedBOM.description" type="text" placeholder="Description" required/>
-                <br>
-                
-                Add a part: 
-                <select id="partTypeSelect" ng-model="partType">
-                    <option ng-repeat="part in partTypes" value="{{part.value}}">{{part.label}}</option>
-                </select>
-                
-                <input type="text" ng-model="partsFilter" ng-show="partType" placeholder="Filter Parts (optional)">
-                
-                <select id="partSelect" ng-model="part" ng-show="partType" ng-options="part as part.description for part in parts[partType] | filter:{description : partsFilter}">
-                </select>
-
-                <input class="quantityInput" ng-model="quantity" type="number" id="quantityInput" ng-show="part" placeholder="Qty" min="1" integer />
-                <div class="btn btn-success btn-xs" ng-show="quantity > 0 && part" ng-click="addPart()">Add Part(s)</div>
-                
-                <br/>
-                
-                <table id="partsList" ng-show="selectedBOM.parts.length"  class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
-    
-	                <thead>
-	                    <tr>
-	                        <th width="200">
-	                            <span class="sortLink" ng-click="sort.parts.type = 'number'; sort.parts.reverse = !sort.parts.reverse">
-	                                Number
-	                                <span ng-show="sort.parts.type == 'number' && !sort.parts.reverse" class="fa fa-caret-down"></span>
-	                                <span ng-show="sort.parts.type == 'number' && sort.parts.reverse" class="fa fa-caret-up"></span>
-	                            </span>
-	                        </th>
-                            <th>
-	                            <span class="sortLink" ng-click="sort.parts.type = 'description'; sort.parts.reverse = !sort.parts.reverse">
-	                                Description
-	                                <span ng-show="sort.parts.type == 'description' && !sort.parts.reverse" class="fa fa-caret-down"></span>
-	                                <span ng-show="sort.parts.type == 'description' && sort.parts.reverse" class="fa fa-caret-up"></span>
-	                            </span>
-                            </th>
-                            <th>
-                                <span class="sortLink" ng-click="sort.parts.type = 'quantity'; sort.parts.reverse = !sort.parts.reverse">
-                                    Qty
-                                    <span ng-show="sort.parts.type == 'quantity' && !sort.parts.reverse" class="fa fa-caret-down"></span>
-                                    <span ng-show="sort.parts.type == 'quantity' && sort.parts.reverse" class="fa fa-caret-up"></span>
-                                </span>
-                            </th>
-	                        <th width="150">Actions</th>
-	                    </tr>
-	                </thead>
-	    
-	                <tbody>
-	                    <tr ng-repeat="thisPart in selectedBOM.parts | orderBy:sort.parts.type:sort.parts.reverse">
-	                        <td>{{ thisPart.number }}</td>
-                            <td>{{ thisPart.description }}</td>
-                            <td><input class="quantityInput" type="number" ng-model="thisPart.quantity" min="1" integer /></td>
-	                        <td>
-	                            <div class="btn btn-danger btn-xs" ng-click="removePart(thisPart)">remove</div>
-	                        </td>
-	                    </tr>
-	                </tbody>
-	    
-	            </table>
-                <div ng-show="!selectedBOM.parts.length" class="alert alert-warning">This BOM currently has no parts. Please add a part above!</div>
-                
-	            <div class="btn btn-success btn-sm" ng-click="saveBOM()">Save</div>
-	            <div class="btn btn-danger btn-sm" ng-click="cancelBOM()">Cancel</div>
-            </div>
-            
         </div>
+        
     </div>
 
 </body>

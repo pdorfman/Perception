@@ -1,4 +1,4 @@
-angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
+angular.module('perceptionBOMs', ['anguFixedHeaderTable', 'ngAnimate'])
 
 .controller('mainController', function($scope, $http) {
 	
