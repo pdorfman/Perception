@@ -28,21 +28,22 @@ import com.perception.demo.services.pojo.Response;
 public class BOMService {
 
 	// Persistence simulating members
-	private static final Map<String,BOM> boms = new HashMap<String,BOM>() ;
-	private static int bomCount = 0;
-	private static final Map<String,List<Part>> partsMap = populatePartsMap();
+	private static int nextBomIndex 						= 1;
+	private static final Map<String,BOM> boms 				= new HashMap<String,BOM>() ;
 	
 	// Helper constants for reading CSVs
-	private static final String CSV_FILE_ROOT = "/com/perception/demo/services/data/";
-	private static final String CAPACITORS_CSV_FILE_PATH = CSV_FILE_ROOT + "Capacitors.csv";
-	private static final String DIODES_CSV_FILE_PATH = CSV_FILE_ROOT + "Diodes.csv";
-	private static final String RESISTORS_CSV_FILE_PATH = CSV_FILE_ROOT + "Resistors.csv";
+	private static final String CSV_FILE_ROOT 				= "/com/perception/demo/services/data/";
+	private static final String CAPACITORS_CSV_FILE_PATH 	= CSV_FILE_ROOT + "Capacitors.csv";
+	private static final String DIODES_CSV_FILE_PATH 		= CSV_FILE_ROOT + "Diodes.csv";
+	private static final String RESISTORS_CSV_FILE_PATH 	= CSV_FILE_ROOT + "Resistors.csv";
 	
-	private static final Map<String,String> PARTS_FILES = new HashMap<String,String>();
+	private static final Map<String,List<Part>> partsMap;
 	static{
-		PARTS_FILES.put("Resistors", RESISTORS_CSV_FILE_PATH);
-		PARTS_FILES.put("Capacitors", CAPACITORS_CSV_FILE_PATH);
-		PARTS_FILES.put("Diodes", DIODES_CSV_FILE_PATH);
+		Map<String,String> partsFilesMap = new HashMap<String,String>();
+		partsFilesMap.put("Resistors", RESISTORS_CSV_FILE_PATH);
+		partsFilesMap.put("Capacitors", CAPACITORS_CSV_FILE_PATH);
+		partsFilesMap.put("Diodes", DIODES_CSV_FILE_PATH);
+		partsMap = generatePartsMap(partsFilesMap);
 	}
 	
 	// Read Endpoints
@@ -108,8 +109,9 @@ public class BOMService {
 	// Helper Methods
 	
 	private String getNextBomNumber(){
-		++bomCount;
-		return "BOM_NUMBER_" + bomCount;
+		String nextBOMNumber = "BOM_NUMBER_" + nextBomIndex;
+		++nextBomIndex;
+		return nextBOMNumber;
 	}
 	
 	private List<String> validateBOM(BOM bom){
@@ -131,10 +133,10 @@ public class BOMService {
 		return errors;
 	}
 	
-	private static Map<String,List<Part>> populatePartsMap(){
+	private static HashMap<String,List<Part>> generatePartsMap(Map<String,String> partsFilesMap){
 		HashMap<String,List<Part>> map = new HashMap<String,List<Part>>();
 		
-		for(Map.Entry<String, String> entry : PARTS_FILES.entrySet()){
+		for(Map.Entry<String, String> entry : partsFilesMap.entrySet()){
 			
 			String csvFile = entry.getValue();
 			InputStream in = BOMService.class.getClassLoader().getResourceAsStream(csvFile);
@@ -161,7 +163,6 @@ public class BOMService {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}finally{
 				try{
@@ -175,7 +176,6 @@ public class BOMService {
 				}catch(Exception e){}
 			}
 		}
-		
 		return map;
 	}
 

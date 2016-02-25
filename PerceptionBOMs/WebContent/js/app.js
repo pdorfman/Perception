@@ -4,19 +4,26 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
 	
 	var SERVICE_BASE_PATH = "rest/bomService";
 	
-	// initialize bom list sort
-    $scope.sortType     = 'number';
-    $scope.sortReverse  = false;
-    $scope.searchFilter = '';
+	// initialize sort
+	$scope.sort = {
+			boms : {
+				type : 'number',
+				reverse : false
+			},
+			parts : {
+				type : 'number',
+				reverse : false
+			}
+	};
 
     // Initialize UI
     $scope.showBOMDetail = false;
     
     // Initialize data model
-    $scope.parts = {};		// map for parts lookup
-    $scope.partTypes = [];	// part types list for select
-    $scope.boms = [];		// currently saved BOMS list
-    $scope.selectedBOM = {};// BOM currently editing
+    $scope.parts 		= {}; // map for parts lookup
+    $scope.partTypes 	= []; // part types list for select
+    $scope.boms 		= []; // currently saved BOMS list
+    $scope.selectedBOM 	= {}; // BOM currently editing
     resetSelectedBOM();
     
     // Retrieve data
@@ -112,7 +119,7 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     	var partInBOM = false;
     	var bomPart = null;
         angular.forEach($scope.selectedBOM.parts, function(value, key) {
-        	if(value.partNumber == $scope.part.partNumber){
+        	if(value.number == $scope.part.number){
         		partInBOM = true;
         		bomPart = value;
         	}

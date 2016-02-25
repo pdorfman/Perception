@@ -6,17 +6,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Perception BOMs</title>
 
-
     <!-- CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
 
 	<!--  JS -->
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> -->
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
 	<script src="js/libraries/angular/angu-fixed-header-table.js"></script>
 	<script src="js/app.js"></script>
+	
 </head>
 
 <body>
@@ -34,19 +33,25 @@
 	            <thead>
 	                <tr>
 	                    <th width="200">
-	                      <span class="sortLink" ng-click="sortType = 'number'; sortReverse = !sortReverse">
-	                        BOM Number
-					        <span ng-show="sortType == 'number' && !sortReverse" class="fa fa-caret-down"></span>
-					        <span ng-show="sortType == 'number' && sortReverse" class="fa fa-caret-up"></span>
-	                      </span>
+                            <span class="sortLink" ng-click="sort.boms.type = 'number'; sort.boms.reverse = !sort.boms.reverse">
+		                        Number
+						        <span ng-show="sort.boms.type == 'number' && !sort.boms.reverse" class="fa fa-caret-down"></span>
+						        <span ng-show="sort.boms.type == 'number' && sort.boms.reverse" class="fa fa-caret-up"></span>
+                            </span>
 	                    </th>
-                        <th>Description</th>
+                        <th>
+                            <span class="sortLink" ng-click="sort.boms.type = 'description'; sort.boms.reverse = !sort.boms.reverse">
+	                            Description
+	                            <span ng-show="sort.boms.type == 'description' && !sort.boms.reverse" class="fa fa-caret-down"></span>
+	                            <span ng-show="sort.boms.type == 'description' && sort.boms.reverse" class="fa fa-caret-up"></span>
+                            </span>
+                        </th>
                         <th width="150">Actions</th>
 	                </tr>
 	            </thead>
 	
 	            <tbody>
-	                <tr ng-repeat="bom in boms | orderBy:sortType:sortReverse">
+	                <tr ng-repeat="bom in boms | orderBy:sort.boms.type:sort.boms.reverse">
 	                    <td>{{ bom.number }}</td>
                         <td>{{ bom.description }} with {{bom.parts.length}} component parts and {{sumParts(bom.parts, "quantity")}} total pieces</td>
                         <td>
@@ -88,19 +93,33 @@
 	                <thead>
 	                    <tr>
 	                        <th width="200">
-	                          <span>
-	                            Part Number
-	                          </span>
+	                            <span class="sortLink" ng-click="sort.parts.type = 'number'; sort.parts.reverse = !sort.parts.reverse">
+	                                Number
+	                                <span ng-show="sort.parts.type == 'number' && !sort.parts.reverse" class="fa fa-caret-down"></span>
+	                                <span ng-show="sort.parts.type == 'number' && sort.parts.reverse" class="fa fa-caret-up"></span>
+	                            </span>
 	                        </th>
-                            <th>Description</th>
-                            <th>Qty</th>
+                            <th>
+	                            <span class="sortLink" ng-click="sort.parts.type = 'description'; sort.parts.reverse = !sort.parts.reverse">
+	                                Description
+	                                <span ng-show="sort.parts.type == 'description' && !sort.parts.reverse" class="fa fa-caret-down"></span>
+	                                <span ng-show="sort.parts.type == 'description' && sort.parts.reverse" class="fa fa-caret-up"></span>
+	                            </span>
+                            </th>
+                            <th>
+                                <span class="sortLink" ng-click="sort.parts.type = 'quantity'; sort.parts.reverse = !sort.parts.reverse">
+                                    Qty
+                                    <span ng-show="sort.parts.type == 'quantity' && !sort.parts.reverse" class="fa fa-caret-down"></span>
+                                    <span ng-show="sort.parts.type == 'quantity' && sort.parts.reverse" class="fa fa-caret-up"></span>
+                                </span>
+                            </th>
 	                        <th width="150">Actions</th>
 	                    </tr>
 	                </thead>
 	    
 	                <tbody>
-	                    <tr ng-repeat="thisPart in selectedBOM.parts">
-	                        <td>{{ thisPart.partNumber }}</td>
+	                    <tr ng-repeat="thisPart in selectedBOM.parts | orderBy:sort.parts.type:sort.parts.reverse">
+	                        <td>{{ thisPart.number }}</td>
                             <td>{{ thisPart.description }}</td>
                             <td><input class="quantityInput" type="number" ng-model="thisPart.quantity" min="1" integer /></td>
 	                        <td>

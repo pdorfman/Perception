@@ -1,31 +1,31 @@
 package com.perception.demo.services.pojo;
 
 public class Part {
-	private String partNumber;
+	private String number;
 	private String type;
 	private String description;
 	private int quantity = 0;
 	
 	public Part(){}
 	
-	public Part(String type, String partNumber, String descirption){
-		this.partNumber = partNumber;
+	public Part(String type, String number, String descirption){
+		this.number = number;
 		this.type = type;
 		this.description = descirption;
 	}
 	
-	public Part(String type, String partNumber, String descirption, int qty){
-		this.partNumber = partNumber;
+	public Part(String type, String number, String descirption, int qty){
+		this.number = number;
 		this.type = type;
 		this.description = descirption;
 		this.quantity = qty;
 	}
 	
-	public String getPartNumber() {
-		return partNumber;
+	public String getNumber() {
+		return number;
 	}
-	public void setPartNumber(String partNumber) {
-		this.partNumber = partNumber;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 	public String getType() {
 		return type;
@@ -50,6 +50,6 @@ public class Part {
 
 	@Override
 	public String toString() {
-		return "Part [title=" + partNumber + ", type=" + type + "]";
+		return "Part [title=" + number + ", type=" + type + "]";
 	}
 }
