@@ -5,6 +5,10 @@ select, input {
     margin-right: 10px;
 }
 
+#partsList input {
+	margin-bottom: 0px;
+}
+
 .container {
 	width: 70%;
 }

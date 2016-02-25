@@ -1,5 +1,9 @@
 package com.perception.demo.services;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,17 +19,33 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.opencsv.CSVReader;
 import com.perception.demo.services.pojo.BOM;
 import com.perception.demo.services.pojo.Part;
-import com.perception.demo.services.pojo.PartsList;
 import com.perception.demo.services.pojo.Response;
 
 @Path("/bomService")
 public class BOMService {
 
+	// Persistence simulating members
 	private static final Map<String,BOM> boms = new HashMap<String,BOM>() ;
 	private static int bomCount = 0;
 	private static final Map<String,List<Part>> partsMap = populatePartsMap();
+	
+	// Helper constants for reading CSVs
+	private static final String CSV_FILE_ROOT = "/com/perception/demo/services/data/";
+	private static final String CAPACITORS_CSV_FILE_PATH = CSV_FILE_ROOT + "Capacitors.csv";
+	private static final String DIODES_CSV_FILE_PATH = CSV_FILE_ROOT + "Diodes.csv";
+	private static final String RESISTORS_CSV_FILE_PATH = CSV_FILE_ROOT + "Resistors.csv";
+	
+	private static final Map<String,String> PARTS_FILES = new HashMap<String,String>();
+	static{
+		PARTS_FILES.put("Resistors", RESISTORS_CSV_FILE_PATH);
+		PARTS_FILES.put("Capacitors", CAPACITORS_CSV_FILE_PATH);
+		PARTS_FILES.put("Diodes", DIODES_CSV_FILE_PATH);
+	}
+	
+	// Read Endpoints
 	
 	@Path("/parts")
 	@GET
@@ -40,6 +60,8 @@ public class BOMService {
 	public List<BOM> getBomsList() {
 		return new ArrayList<BOM>(boms.values());
 	}
+	
+	// Write Endpoints
 
 	@Path("/boms")
 	@POST
@@ -111,18 +133,48 @@ public class BOMService {
 	
 	private static Map<String,List<Part>> populatePartsMap(){
 		HashMap<String,List<Part>> map = new HashMap<String,List<Part>>();
+		
+		for(Map.Entry<String, String> entry : PARTS_FILES.entrySet()){
+			
+			String csvFile = entry.getValue();
+			InputStream in = BOMService.class.getClassLoader().getResourceAsStream(csvFile);
+			InputStreamReader isr = new InputStreamReader(in);
 
-		List<Part> resistors = new ArrayList<Part>();
-		List<Part> capacitors = new ArrayList<Part>();
-		List<Part> diodes = new ArrayList<Part>();
-
-		resistors.add(new Part("Resistor", "Number 1", "Test Desc resistor"));
-		capacitors.add(new Part("Capacitor", "Number 2", "Test Desc 2 capacitor"));
-		diodes.add(new Part("Diode", "Number 3", "Test Desc 3 diode"));
-
-		map.put("Resistors", resistors);
-		map.put("Capacitors", capacitors);
-		map.put("Diodes", diodes);
+			CSVReader reader = null;
+			try {
+				reader = new CSVReader(isr);
+				
+				// Build the parts list for this CSV
+				List<Part> parts = new ArrayList<Part>();
+				String categoryName = entry.getKey();
+				String partType = categoryName.substring(0, categoryName.length()-1);
+				
+				String [] thisPart;
+				reader.readNext(); // skip header row
+				while ((thisPart = reader.readNext()) != null) {
+					parts.add(new Part(partType, thisPart[2], thisPart[5]));
+			    }
+				
+				// Add the list to the parts map
+				map.put(categoryName, parts);
+			     
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+				try{
+					reader.close();
+				}catch(Exception e){}
+				try{
+					isr.close();
+				}catch(Exception e){}
+				try{
+					in.close();
+				}catch(Exception e){}
+			}
+		}
 		
 		return map;
 	}

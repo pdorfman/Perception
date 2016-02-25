@@ -29,7 +29,7 @@
             </div>
             
             
-	        <table ng-show="boms.length"  id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
+	        <table ng-show="boms.length" id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
 	
 	            <thead>
 	                <tr>
@@ -83,7 +83,7 @@
                 
                 <br/>
                 
-                <table class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
+                <table id="partsList" ng-show="selectedBOM.parts.length"  class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
     
 	                <thead>
 	                    <tr>
@@ -110,6 +110,7 @@
 	                </tbody>
 	    
 	            </table>
+                <div ng-show="!selectedBOM.parts.length" class="alert alert-warning">This BOM currently has no parts. Please add a part above!</div>
                 
 	            <div class="btn btn-success btn-sm" ng-click="saveBOM()">Save</div>
 	            <div class="btn btn-danger btn-sm" ng-click="cancelBOM()">Cancel</div>
