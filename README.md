@@ -1,10 +1,10 @@
 # Perception Bills of Materials Exercise
-This repository contains all of the artifacts I have created for the "Bill of Materials" technical exercise. Below you will find a short description of each asset, as well as assumptions, techologies used, etc.
+This repository contains all of the artifacts I have created for the "Bill of Materials" technical exercise. Below you will find a short description of each asset, as well as technologies leveraged, and the known issue you may encounter.
 
 I thank you for the opportunity to show you my wares, and hope you enjoy!
 
 ## PerceptionBOMs.war 
-The web app is ready to deploy to an application server. The context root of the application is the default: "PerceptionBOMs". There are no server-specific configuration steps necessary. 
+The web app is ready to deploy to an application server. The context root of the application is the default: "PerceptionBOMs". There are no server-specific configuration steps necessary - just plug and play! 
 
 This WAR was exported from the source code residing in this repo as of the final commit.
 
