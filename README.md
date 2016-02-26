@@ -26,4 +26,4 @@ This directory contains the eclipse project and full source for the application.
 ## Known Issues
 I have leveraged the datasheet and image URLs from the parts CSVs. Some are invalid URLs, though I figured the feature was still worth including.
 
-I have successfully tested on the latest versions of Chrome, Firefox, and Safari. I have NOT tested on any version of IE.
+I have successfully tested on the latest versions of Chrome, Firefox, and Safari, though I have not tested on any version of IE.
