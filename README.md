@@ -24,4 +24,6 @@ This directory contains the eclipse project and full source for the application.
 3. [Opencsv](http://opencsv.sourceforge.net/) for reading CSVs
 
 ## Known Issues
-I have leveraged the datasheet and image URLs from the parts CSVs. Some are invalid URLs, though I figured the feature was still worth including. 
+I have leveraged the datasheet and image URLs from the parts CSVs. Some are invalid URLs, though I figured the feature was still worth including.
+
+I have successfully tested on the latest versions of Chrome, Firefox, and Safari. I have NOT tested on any version of IE.
