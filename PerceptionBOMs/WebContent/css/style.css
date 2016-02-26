@@ -1,3 +1,10 @@
+
+
+/*--------------------------*/
+/*---- Layout and Text  ----*/
+/*--------------------------*/
+
+
 body { 
 	padding-top:20px;
 	background-color: #383737;
@@ -7,26 +14,98 @@ a, a:hover, a:visited {
 	color: #007da6;
 }
 
+#logo {
+	display: block;
+	width: 100px;
+    margin-left: 17%;
+    margin-bottom: 20px;
+}
+
+.container {
+    width: 70%;
+}
+
+.wellTitle {
+    font-size: 2em;
+}
+
+.wellTitle .subtext{
+    font-size: .5em;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.lightText{
+    font-style: italic;
+    font-size: .9em;
+}
+
+
+
+/*--------------------------*/
+/*---- Part Icon Links  ----*/
+/*--------------------------*/
+
+
+.imageIcon {
+    width: 20px;
+    border: 1px solid #dfd7ca;
+}
+
+.imageIcon:hover {
+    border-color: #007da6;
+}
+
+.imageLink, .imageLink:hover, .imageLink:visited {
+    text-decoration: none;
+}
+
+
+
+/*----------------------------*/
+/*---- Buttons and Forms  ----*/
+/*----------------------------*/
+
+
 select, input {
     margin-bottom: 10px;
     margin-right: 10px;
 }
 
-#logo {
-	display: block;
-	width: 100px;
-    margin-left: 17%;
-    /* margin-right: auto; */
-    margin-bottom: 20px;
+#partFilter{
+	margin-right: 0px;
+}
+
+#createButton {
+    float: right;
 }
 
 #partsList input {
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
-.container {
-	width: 70%;
+#bomDescriptionInput{
+    width: 60%;
 }
+
+.quantityInput {
+    width: 40px;
+}
+
+#partTypeSelect {
+    max-width: 120px;
+}
+
+#partSelect {
+    width: 240px;
+}
+
+
+
+/*--------------------------------*/
+/*---- Table Scroll and Sort  ----*/
+/*--------------------------------*/
+
 
 table.scroll{
 	overflow-y: scroll;
@@ -36,7 +115,7 @@ table.scroll tbody{
     max-height: 225px;
 }
 
- table {
+table {
 	color: black;
 	background-color: white;
 }
@@ -49,47 +128,19 @@ table.scroll tbody{
     text-decoration: underline;
 }
 
-#createButton {
-	float: right;
-/* 	margin-top: 20px; */
-}
-
-.wellTitle {
-	font-size: 2em;
-}
-
-.wellTitle .subtext{
-	font-size: .5em;
-	font-style: italic;
-    font-weight: normal;
-}
-
-.lightText{
-	font-style: italic;
-	font-size: .9em;
-}
-
-#bomDescriptionInput{
-	width: 60%;
-}
-
-.quantityInput {
-	width: 40px;
-}
-
-#partTypeSelect {
-	max-width: 120px;
-}
-#partSelect {
-	width: 240px;
-}
-
 /* bootswatch overrides */
+
 .table-striped>tbody>tr:nth-child(odd)>td, 
 .table-striped>tbody>tr:nth-child(odd)>th {
    background-color: #fcf8e3;
  }
+ 
 .table-striped>tbody>tr:nth-child(odd):hover>td, 
 .table-striped>tbody>tr:nth-child(odd):hover>th {
    background-color: #faf2cc;
  }
+
+
+
+
+
