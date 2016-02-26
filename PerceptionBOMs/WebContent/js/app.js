@@ -156,7 +156,7 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
             // initialize the partTypes list
             $scope.partTypes.push( {label : "Select Type", value : ""} );
             angular.forEach(response, function(value, key) {
-            	$scope.partTypes.push( {label : key.charAt(0).toUpperCase() + key.slice(1), value: key} );
+            	$scope.partTypes.push( {label : key, value: key} );
         	});
             
             // Set full parts as map for easy select list population
