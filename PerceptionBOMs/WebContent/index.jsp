@@ -19,15 +19,69 @@
 </head>
 
 <body>
+
     <img id="logo" src="https://www.perceptionsoftware.com/wp-content/themes/perception/images/logo.png">
     
+    
+    <!-- Angular App Container -->
     <div class="container" ng-app="perceptionBOMs" ng-controller="mainController">
   
+        
+        <!-- BOMs LIST -->
+        
+        <div class="well" ng-show="!showBOMDetail">
+        
+            <div class="wellTitle">
+                <span>Bills of Materials</span>
+                <div id="createButton" class="btn btn-success btn-sm" ng-click="createBOM()">Create New BOM</div>
+            </div>
+            
+	        <table ng-show="boms.length" id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
+	
+	            <thead>
+	                <tr>
+	                    <th>
+                            <span class="sortLink" ng-click="sort.boms.type = 'number'; sort.boms.reverse = !sort.boms.reverse">
+		                        BOM Number
+						        <span ng-show="sort.boms.type == 'number' && !sort.boms.reverse" class="fa fa-caret-down"></span>
+						        <span ng-show="sort.boms.type == 'number' && sort.boms.reverse" class="fa fa-caret-up"></span>
+                            </span>
+	                    </th>
+                        <th>
+                            <span class="sortLink" ng-click="sort.boms.type = 'description'; sort.boms.reverse = !sort.boms.reverse">
+	                            Description
+	                            <span ng-show="sort.boms.type == 'description' && !sort.boms.reverse" class="fa fa-caret-down"></span>
+	                            <span ng-show="sort.boms.type == 'description' && sort.boms.reverse" class="fa fa-caret-up"></span>
+                            </span>
+                        </th>
+                        <th>Actions</th>
+	                </tr>
+	            </thead>
+	
+	            <tbody>
+	                <tr ng-repeat="bom in boms | orderBy:sort.boms.type:sort.boms.reverse">
+	                    <td>{{ bom.number }}</td>
+                        <td>{{ bom.description }} <span class="lightText">({{bom.parts.length}} component parts and {{sumParts(bom.parts, "quantity")}} total pieces)</span></td>
+                        <td>
+                            <div class="btn btn-info btn-xs" ng-click="editBOM(bom)">edit</div>
+                            <div class="btn btn-danger btn-xs" ng-click="deleteBOM(bom)">delete</div>
+                        </td>
+	                </tr>
+	            </tbody>
+	
+	        </table>
+	        <div ng-show="!boms.length" class="alert alert-warning">You currently have no saved BOMS. Please click the link above to get started!</div>
+	        
+        </div>
+        
+        
+        <!-- PARTS DETAIL -->
+        
         <div class="well" ng-show="showBOMDetail">
         
-            <div id="bomTitle">
-                <span ng-show="selectedBOM.number">BOM Detail ({{selectedBOM.number}})</span>
-                <span ng-show="!selectedBOM.number">New BOM Detail</span>
+            <div class="wellTitle">
+                <span ng-show="selectedBOM.number">Bill of Materials Parts Detail <span class="subtext">({{selectedBOM.number}})</span> </span>
+                <span ng-show="!selectedBOM.number">New Bill of Materials</span>
             </div>
             
             <input id="bomDescriptionInput" ng-model="selectedBOM.description" type="text" placeholder="Description" required/>
@@ -52,7 +106,7 @@
    
                 <thead>
                     <tr>
-                        <th width="200">
+                        <th>
                             <span class="sortLink" ng-click="sort.parts.type = 'number'; sort.parts.reverse = !sort.parts.reverse">
                                 Corporate Part Number
                                 <span ng-show="sort.parts.type == 'number' && !sort.parts.reverse" class="fa fa-caret-down"></span>
@@ -74,19 +128,15 @@
                             </div>
                         </th>
                         <th>
-                            <div class="sortLink" ng-click="sort.parts.type = 'quantity'; sort.parts.reverse = !sort.parts.reverse">
-                                Qty
-                                <span ng-show="sort.parts.type == 'quantity' && !sort.parts.reverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sort.parts.type == 'quantity' && sort.parts.reverse" class="fa fa-caret-up"></span>
-                            </div>
+                            Qty
                         </th>
-                        <th width="150">Actions</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
     
                 <tbody>
                     <tr ng-repeat="thisPart in selectedBOM.parts | orderBy:sort.parts.type:sort.parts.reverse">
-                        <td>{{ thisPart.number }}</td>
+                        <td><a href="{{thisPart.datasheetURL}}" target="_blank" title="Click to view datasheet in a new window">{{ thisPart.number }}</a></td>
                         <td>{{ thisPart.type }}</td>
                         <td>{{ thisPart.description }}</td>
                         <td>
@@ -105,50 +155,6 @@
             <div class="btn btn-danger btn-sm" ng-click="cancelBOM()">Cancel</div>
         </div>
         
-        <div class="well">
-        
-            <div id="bomTitle">
-                <span>Bills of Materials</span>
-                <div id="createButton" class="btn btn-success btn-sm" ng-click="createBOM()">Create New BOM</div>
-            </div>
-            
-	        <table ng-show="boms.length" id="bomsList" class="scroll table table-condensed table-bordered table-striped table-hover warning" fixed-header>
-	
-	            <thead>
-	                <tr>
-	                    <th width="200">
-                            <span class="sortLink" ng-click="sort.boms.type = 'number'; sort.boms.reverse = !sort.boms.reverse">
-		                        BOM Number
-						        <span ng-show="sort.boms.type == 'number' && !sort.boms.reverse" class="fa fa-caret-down"></span>
-						        <span ng-show="sort.boms.type == 'number' && sort.boms.reverse" class="fa fa-caret-up"></span>
-                            </span>
-	                    </th>
-                        <th>
-                            <span class="sortLink" ng-click="sort.boms.type = 'description'; sort.boms.reverse = !sort.boms.reverse">
-	                            Description
-	                            <span ng-show="sort.boms.type == 'description' && !sort.boms.reverse" class="fa fa-caret-down"></span>
-	                            <span ng-show="sort.boms.type == 'description' && sort.boms.reverse" class="fa fa-caret-up"></span>
-                            </span>
-                        </th>
-                        <th width="150">Actions</th>
-	                </tr>
-	            </thead>
-	
-	            <tbody>
-	                <tr ng-repeat="bom in boms | orderBy:sort.boms.type:sort.boms.reverse">
-	                    <td>{{ bom.number }}</td>
-                        <td>{{ bom.description }} with {{bom.parts.length}} component parts and {{sumParts(bom.parts, "quantity")}} total pieces</td>
-                        <td>
-                            <div class="btn btn-info btn-xs" ng-click="editBOM(bom)">edit</div>
-                            <div class="btn btn-danger btn-xs" ng-click="deleteBOM(bom)">delete</div>
-                        </td>
-	                </tr>
-	            </tbody>
-	
-	        </table>
-	        <div ng-show="!boms.length" class="alert alert-warning">You currently have no saved BOMS. Please click the link above to get started!</div>
-	        
-        </div>
         
     </div>
 

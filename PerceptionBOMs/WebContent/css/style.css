@@ -3,6 +3,10 @@ body {
 	background-color: #383737;
 }
 
+a, a:hover, a:visited {
+	color: #007da6;
+}
+
 select, input {
     margin-bottom: 10px;
     margin-right: 10px;
@@ -25,8 +29,11 @@ select, input {
 }
 
 table.scroll{
-	height: 125px;
 	overflow-y: scroll;
+}
+
+table.scroll tbody{
+    max-height: 225px;
 }
 
  table {
@@ -47,8 +54,19 @@ table.scroll{
 /* 	margin-top: 20px; */
 }
 
-#bomTitle {
+.wellTitle {
 	font-size: 2em;
+}
+
+.wellTitle .subtext{
+	font-size: .5em;
+	font-style: italic;
+    font-weight: normal;
+}
+
+.lightText{
+	font-style: italic;
+	font-size: .9em;
 }
 
 #bomDescriptionInput{

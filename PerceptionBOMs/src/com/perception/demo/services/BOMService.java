@@ -154,7 +154,10 @@ public class BOMService {
 				String [] thisPart;
 				reader.readNext(); // skip header row
 				while ((thisPart = reader.readNext()) != null) {
-					parts.add(new Part(partType, thisPart[2], thisPart[5]));
+					Part part = new Part(partType, thisPart[2], thisPart[5]);
+					part.setDatasheetURL(thisPart[0]);
+					part.setImageURL(thisPart[1]);
+					parts.add(part);
 			    }
 				
 				// Add the list to the parts map
