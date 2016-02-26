@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Response {
+	
 	public static final String SUCCESS = "success";
 	public static final String FAILURE = "failure";
 	

@@ -46,7 +46,7 @@ public class BOMService {
 		partsMap = generatePartsMap(partsFilesMap);
 	}
 	
-	// Read Endpoints
+	// Read
 	
 	@Path("/parts")
 	@GET
@@ -62,7 +62,7 @@ public class BOMService {
 		return new ArrayList<BOM>(boms.values());
 	}
 	
-	// Write Endpoints
+	// Write
 
 	@Path("/boms")
 	@POST
@@ -71,7 +71,6 @@ public class BOMService {
 	public Response createBOM(BOM newBOM) {
 
 		List<String> errors = validateBOM(newBOM);
-
 		if(errors.size() == 0){
 			newBOM.setNumber(getNextBomNumber());
 			boms.put(newBOM.getNumber(), newBOM);
@@ -88,7 +87,6 @@ public class BOMService {
 	public Response updateBOM(@PathParam("bomNmber") String bomNumber, BOM newBOM) {
 		
 		List<String> errors = validateBOM(newBOM);
-		
 		if(errors.size() == 0){
 			boms.put(bomNumber, newBOM);
 			return new Response(Response.SUCCESS, "BOM " + bomNumber + " successfully updated");
@@ -154,9 +152,7 @@ public class BOMService {
 				String [] thisPart;
 				reader.readNext(); // skip header row
 				while ((thisPart = reader.readNext()) != null) {
-					Part part = new Part(partType, thisPart[2], thisPart[5]);
-					part.setDatasheetURL(thisPart[0]);
-					part.setImageURL(thisPart[1]);
+					Part part = new Part(partType, thisPart[2], thisPart[5], thisPart[0], thisPart[1]);
 					parts.add(part);
 			    }
 				
@@ -181,5 +177,4 @@ public class BOMService {
 		}
 		return map;
 	}
-
 }

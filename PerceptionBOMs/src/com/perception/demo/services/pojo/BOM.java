@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BOM {
+	
 	private String description;
 	private String number;
 	List<Part> parts = new ArrayList<Part>();
@@ -18,18 +19,23 @@ public class BOM {
 	public String getDescription() {
 		return description;
 	}
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public String getNumber() {
 		return number;
 	}
+	
 	public void setNumber(String number) {
 		this.number = number;
 	}
+	
 	public List<Part> getParts() {
 		return parts;
 	}
+	
 	public void setParts(List<Part> parts) {
 		this.parts = parts;
 	}

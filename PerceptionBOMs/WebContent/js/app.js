@@ -34,16 +34,9 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     /*---- BOM persistence -----*/
     
     $scope.createBOM = function(){
-    	var isCreate = true;
-    	if($scope.selectedBOM.number != null){
-    		isCreate = confirm("To create a new BOM, you will lose any changes to the currently selected BOM.\nWould you like to continue?");
-    	}
-
-    	if(isCreate){
-        	resetPartSelection();
-        	resetSelectedBOM();
-        	showBOMDetail();
-    	}
+    	resetPartSelection();
+    	resetSelectedBOM();
+    	showBOMDetail();
     };
     
     $scope.editBOM = function(bom){
@@ -61,42 +54,43 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     	console.log("Save BOM...");
     	console.log($scope.selectedBOM);
     	
+    	var httpMethod;
+    	var url;
+    	
     	if($scope.selectedBOM.number == null){
     		// Create new BOM
-    		var url = SERVICE_BASE_PATH + "/boms";
+    		url = SERVICE_BASE_PATH + "/boms";
     		console.log("POST " + url);
-	    	$http.post(url, $scope.selectedBOM).success( function(response){
-	    		console.log("POST RESPONSE");
-	    		console.log(response);
-	    		
-	    		if(response.status == 'success'){
-		        	hideBOMDetail();
-		        	loadBOMs();
-	    		}
-	        	displayResponseMessage(response);
-	    	});
+    		httpMethod = $http.post;
+    		
     	}else{
     		// Update existing BOM
-    		var url = SERVICE_BASE_PATH + "/boms/" + $scope.selectedBOM.number;
+    		url = SERVICE_BASE_PATH + "/boms/" + $scope.selectedBOM.number;
     		console.log("PUT " + url);
-	    	$http.put(url, $scope.selectedBOM).success( function(response){
-	    		console.log("PUT RESPONSE");
-	    		console.log(response);
-
-	    		if(response.status == 'success'){
-		        	hideBOMDetail();
-		        	loadBOMs();
-	    		}
-	        	displayResponseMessage(response);
-	    	});
+    		httpMethod = $http.put;
     	}
+    	
+    	httpMethod(url, $scope.selectedBOM).success( function(response){
+    		console.log("saveBOM RESPONSE");
+    		console.log(response);
+    		
+    		if(response.status == 'success'){
+	        	hideBOMDetail();
+	        	loadBOMs();
+    		}
+        	displayResponseMessage(response);
+    	});
+    	
+    	
     };
     
     $scope.deleteBOM = function(bom){
     	if(confirm('Are you sure you want to delete this BOM?\nThis cannot be undone.')){
+    		
     		// delete existing BOM
     		var url = SERVICE_BASE_PATH + "/boms/" + bom.number;
     		console.log("DELETE " + url);
+    		
 	    	$http.delete(url).success( function(response){
 	    		console.log("DELETE RESPONSE");
 	    		console.log(response);
@@ -114,7 +108,6 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     /*---- Parts Manipulation -----*/
     
     $scope.addPart = function(){
-    	
     	// Check if part already in this BOM
     	var partInBOM = false;
     	var bomPart = null;
@@ -157,10 +150,8 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     /*----- "Private" functions -----*/
     
     function loadParts(){
+    	console.log('Retrieving parts list');
         $http.get(SERVICE_BASE_PATH + "/parts").success( function(response) {
-        	
-            console.log('parts ajax result: ');
-            console.log(response);
             
             // initialize the partTypes list
             $scope.partTypes.push( {label : "Select Type", value : ""} );
@@ -168,28 +159,25 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
             	$scope.partTypes.push( {label : key.charAt(0).toUpperCase() + key.slice(1), value: key} );
         	});
             
-            // Set full parts map for later quick reference
+            // Set full parts as map for easy select list population
             $scope.parts = response;
          });
     }
     
     function loadBOMs(){
+    	console.log('Retrieving BOMs list');
         $http.get(SERVICE_BASE_PATH + "/boms").success( function(response){
-            console.log('boms ajax result: ');
-            console.log(response);
         	$scope.boms = response;
         });
     }
     
     function hideBOMDetail(){
-    	enableButtons();
     	resetSelectedBOM();
     	$scope.showBOMDetail = false;
     }
 
     function showBOMDetail(){
     	$scope.showBOMDetail = true;
-    	disableButtons();
     }
     
     function resetSelectedBOM(){
@@ -205,28 +193,18 @@ angular.module('perceptionBOMs', ['anguFixedHeaderTable'])
     	$scope.partType = "";
     	$scope.partsFilter = "";
     	$scope.part = "";
-    	$scope.quantity = "";
-    }
-    
-    function disableButtons(){
-    	angular.element(document.querySelector('#createButton')).addClass('disabled');
-    	angular.element(document.querySelectorAll('#bomsList .btn')).addClass('disabled');
-    }
-    
-    function enableButtons(){
-    	angular.element(document.querySelector('#createButton')).removeClass('disabled');
-    	angular.element(document.querySelectorAll('#bomsList .btn')).removeClass('disabled');
+    	$scope.quantity = 1;
     }
     
     function displayResponseMessage(response){
     	var msg;
     	if(response.status == "success"){
-    		msg = 'Success!\n';
+    		msg = 'Success!\n\n';
     	}else{
-    		msg = 'We encountered a problem:\n';
+    		msg = 'We encountered a problem:\n\n';
     	}
         angular.forEach(response.messages, function(value) {
-			msg += '- ' + value + '\n';
+			msg += '* ' + value + '\n';
     	});
     	alert(msg);
     }
