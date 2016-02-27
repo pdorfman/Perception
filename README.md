@@ -4,7 +4,7 @@ This repository contains all of the artifacts I have created for the "Bill of Ma
 I thank you for the opportunity to show you my wares, and hope you enjoy!
 
 ## Hosted Solution
-The solution has been [deployed to heroku](https://dry-inlet-34561.herokuapp.com/) for easy viewing.
+The solution has been <a href="https://dry-inlet-34561.herokuapp.com/" target="_blank">deployed to heroku</a> for easy viewing.
 
 ## PerceptionBOMs-0.0.1-SNAPSHOT.war 
 
@@ -24,14 +24,14 @@ This directory contains the eclipse project and full source for the application.
 ## Technologies Leveraged
 
 ### Front-end
-1. [AngularJS](https://angularjs.org/) (for application MVC architecture and data-binding)
-2. [angu-fixed-header-table.js](https://github.com/cornflourblue/angu-fixed-header-table) (Angular directive for scrollable table)
-3. [Bootswatch Sandstone](https://bootswatch.com/sandstone/) (CSS theme for rapid initial styling)
+1. <a href="https://angularjs.org/" target="_blank">AngularJS</a> (for application MVC architecture and data-binding)
+2. <a href="https://github.com/cornflourblue/angu-fixed-header-table" target="_blank">angu-fixed-header-table.js</a> (Angular directive for scrollable table)
+3. <a href="https://bootswatch.com/sandstone/" target="_blank">Bootswatch Sandstone</a> (CSS theme for rapid initial styling)
 
 ### Back-end
 1. Jersey for REST service
 2. Jackson for producing/consuming JSON
-3. [Opencsv](http://opencsv.sourceforge.net/) for reading CSVs
+3. <a href="http://opencsv.sourceforge.net/" target="_blank">Opencsv</a> for reading CSVs
 
 ## Known Issues
 I have leveraged the datasheet and image URLs from the parts CSVs. Some are invalid URLs, though I figured the feature was still worth including.
