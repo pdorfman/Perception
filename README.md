@@ -6,16 +6,20 @@ I thank you for the opportunity to show you my wares, and hope you enjoy!
 ## Hosted Solution
 The solution has been [deployed to heroku](https://dry-inlet-34561.herokuapp.com/) for easy viewing.
 
-## PerceptionBOMs.war 
-The web app is ready to deploy to an application server. The context root of the application is the default: "PerceptionBOMs". There are no server-specific configuration steps necessary - just plug and play! 
+## PerceptionBOMs-0.0.1-SNAPSHOT.war 
+
+This WAR was built with Maven from the source code residing in this repo as of the final commit. This WAR is ready to deploy to an application server. There are no server-specific configuration steps necessary.
+
+The context root of the application is "/PerceptionBOMs".
+
 ### Environment Requirements
 * JRE 7
+  * I updated the project Java compiler compliance to Java SE JRE 1.7, though I have only tested on my local environment running Java 8.
 * Tomcat 8
 
-This WAR was exported from the source code residing in this repo as of the final commit.
 
 ## PerceptionBOMs Directory
-This directory contains the eclipse project and full source for the application.
+This directory contains the eclipse project and full source for the application. There is a pom.xml that should allow building of the application with Maven.
 
 ## Technologies Leveraged
 
@@ -32,4 +36,4 @@ This directory contains the eclipse project and full source for the application.
 ## Known Issues
 I have leveraged the datasheet and image URLs from the parts CSVs. Some are invalid URLs, though I figured the feature was still worth including.
 
-With the app deployed to a local installation of Tomcat 8.0, I have successfully tested on the latest versions of Chrome, Firefox, and Safari, though I have not tested on any version of IE.
+With the app deployed to my local environment running Java 8 on Tomcat 8.0, I have successfully tested on the latest versions of Chrome, Firefox, and Safari, though I have not tested on any version of IE.
