@@ -3,8 +3,14 @@ This repository contains all of the artifacts I have created for the "Bill of Ma
 
 I thank you for the opportunity to show you my wares, and hope you enjoy!
 
+## Hosted Solution
+The solution has been [deployed to heroku](https://dry-inlet-34561.herokuapp.com/) for easy viewing.
+
 ## PerceptionBOMs.war 
 The web app is ready to deploy to an application server. The context root of the application is the default: "PerceptionBOMs". There are no server-specific configuration steps necessary - just plug and play! 
+### Environment Requirements
+* JRE 7
+* Tomcat 8
 
 This WAR was exported from the source code residing in this repo as of the final commit.
 
