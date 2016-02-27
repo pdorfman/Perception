@@ -8,7 +8,7 @@ The solution has been <a href="https://dry-inlet-34561.herokuapp.com/" target="_
 
 ## PerceptionBOMs-0.0.1-SNAPSHOT.war 
 
-This WAR was built with Maven from the source code residing in this repo as of the final commit. This WAR is ready to deploy to an application server. There are no server-specific configuration steps necessary.
+This WAR was built with Maven 3.3.9 from the source code residing in this repo as of the final commit. This WAR is ready to deploy to an application server. There are no server-specific configuration steps necessary.
 
 The context root of the application is "/PerceptionBOMs".
 
@@ -17,9 +17,8 @@ The context root of the application is "/PerceptionBOMs".
   * I updated the project Java compiler compliance to Java SE JRE 1.7, though I have only tested on my local environment running Java 8.
 * Tomcat 8
 
-
 ## PerceptionBOMs Directory
-This directory contains the eclipse project and full source for the application. There is a pom.xml that should allow building of the application with Maven.
+This directory contains the eclipse project and full source for the application. There is a pom.xml that should allow building of the application with Maven. 
 
 ## Technologies Leveraged
 
